@@ -1,0 +1,45 @@
+services:
+  phoenix_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      MIX_ENV: prod
+      PHX_HOST: localhost
+      PORT: "4000"
+      # IMPORTANT: Set secure values for production!
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:?SECRET_KEY_BASE must be set for production}
+      API_KEYS: ${API_KEYS:?API_KEYS must be set for production}
+    healthcheck:
+      test: ["CMD", "bin/phoenix_api", "pid"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Development profile with live code reloading
+  phoenix_api_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    profiles:
+      - dev
+    ports:
+      - "4000:4000"
+    environment:
+      MIX_ENV: dev
+      PHX_HOST: localhost
+      PORT: "4000"
+    volumes:
+      - .:/app
+      - deps:/app/deps
+      - build:/app/_build
+    command: mix phx.server
+
+volumes:
+  deps:
+  build:
