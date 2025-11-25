@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+
+# Build artifacts
+/_build
+/cover
+/deps
+/doc
+/.fetch
+erl_crash.dump
+*.ez
+*.beam
+
+# Elixir specific
+.elixir_ls/
+/priv/static/
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test files
+/test
+
+# Documentation
+README.md
+
+# CI/CD
+.github/
+
+# Temporary files
+/tmp
+*.log

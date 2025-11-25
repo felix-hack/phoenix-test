@@ -147,6 +147,74 @@ Response (401 Unauthorized):
 mix test
 ```
 
+## Docker
+
+### Quick Start with Docker Compose
+
+1. Set the required environment variables:
+   ```bash
+   export SECRET_KEY_BASE=$(openssl rand -base64 48)
+   export API_KEYS="your-api-key-1,your-api-key-2"
+   ```
+
+2. Build and run the container:
+   ```bash
+   docker compose up --build
+   ```
+
+3. The API will be available at `http://localhost:4000`.
+
+### Environment Variables
+
+When running with Docker, you must configure the following environment variables:
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `SECRET_KEY_BASE` | Secret key for signing/encryption (64+ chars) | Yes |
+| `API_KEYS` | Comma-separated list of valid API keys | Yes |
+| `PHX_HOST` | Hostname for URL generation | No (default: `localhost`) |
+| `PORT` | Port to listen on | No (default: `4000`) |
+
+### Production Deployment
+
+For production, set proper values for sensitive environment variables:
+
+```bash
+# Generate a secure secret key
+export SECRET_KEY_BASE=$(openssl rand -base64 48)
+
+# Set your production API keys
+export API_KEYS="your-secure-api-key-1,your-secure-api-key-2"
+
+# Run the container
+docker compose up -d
+```
+
+### Building the Image Manually
+
+```bash
+# Build the image
+docker build -t phoenix_api .
+
+# Run the container
+docker run -p 4000:4000 \
+  -e SECRET_KEY_BASE="your-64-character-secret-key-base-here-make-it-long-enough" \
+  -e API_KEYS="your-api-key" \
+  -e PHX_HOST="localhost" \
+  -e PORT="4000" \
+  phoenix_api
+```
+
+### Development with Docker
+
+For development with live code reloading, use the dev profile:
+
+```bash
+docker compose --profile dev up phoenix_api_dev
+```
+
+Note: This mounts your local directory into the container for live code updates.
+
 ## Project Structure
 
 ```
